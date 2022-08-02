@@ -68,3 +68,9 @@ jobs:
     # Run a script to create a new app or update the current one with the previously pushed container image
     - run: | 
          "${GITHUB_WORKSPACE}/.github/script.sh" ${{ env.APP_NAME }} ${{ env.IMAGE_REGISTRY }}/${{ steps.build_image.outputs.image }}:${{ github.sha }} ${{ env.OPENSHIFT_NAMESPACE }}
+- name: Scan image
+  uses: PaloAltoNetworks/prisma-cloud-scan@v1
+  with:pcc_console_url: ${{ env.PCC_CONSOLE_URL }}
+pcc_user: ${{ env.PCC_USER }}
+pcc_pass: ${{ env.PCC_PASS }}
+image_name: ${{ env.IMAGE_NAME }}
