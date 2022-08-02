@@ -10,6 +10,7 @@ env:
   OPENSHIFT_SERVER: ${{ secrets.OPENSHIFT_SERVER }}
   OPENSHIFT_TOKEN: ${{ secrets.OPENSHIFT_TOKEN }}
   OPENSHIFT_NAMESPACE: "manoj-singh8-dev"
+  
   pcc_console_url:  ${{ secrets.PCC_CONSOLE_URL }}
   pcc_user:  ${{ secrets.PCC_USER }}
   pcc_pass:  ${{ secrets.PCC_PASS }} 
