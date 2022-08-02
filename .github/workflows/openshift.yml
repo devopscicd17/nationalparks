@@ -71,7 +71,8 @@ jobs:
  # Run Prisma Scan IBM Account
     - name: Scan image
       uses: PaloAltoNetworks/prisma-cloud-scan@v1
-       with:pcc_console_url:${{ env.PCC_CONSOLE_URL }}
-        pcc_user:${{ env.PCC_USER }}
-        pcc_pass:${{ env.PCC_PASS }} 
-       image_name:${{ env.IMAGE_NAME }}
+      with:
+       pcc_console_url:  ${{ env.PCC_CONSOLE_URL }}
+       pcc_user:  ${{ env.PCC_USER }}
+       pcc_pass:  ${{ env.PCC_PASS }} 
+       image_name:  ${{ env.IMAGE_NAME }}
