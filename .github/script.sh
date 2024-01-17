@@ -2,7 +2,7 @@
 
 app_name=nationalparks
 image=nationalparks
-namespace=manojsingh17-dev
+namespace=manoj-singh8-dev
 
 deploy=`oc get deployment $app_name -n $namespace`
 if [[ "$?" -eq 0 ]]; then
