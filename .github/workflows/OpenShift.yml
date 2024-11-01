@@ -5,7 +5,7 @@ env:
   REGISTRY_USER: ${{ github.actor }}
   REGISTRY_PASSWORD: ${{ github.token }}
   APP_NAME: nationalparks
-  IMAGE_TAGS: latest,${{ github.sha }}
+  IMAGE_TAGS: latest,${{ github.sha }}  # No change needed here, but ensure commas are properly used in the push step
 
   OPENSHIFT_SERVER: ${{ secrets.OPENSHIFT_SERVER }}
   OPENSHIFT_TOKEN: ${{ secrets.OPENSHIFT_TOKEN }}
@@ -52,7 +52,7 @@ jobs:
       uses: redhat-actions/push-to-registry@v2
       with:
         image: ${{ steps.build_image.outputs.image }}
-        tags: ${{ steps.build_image.outputs.tags }}
+        tags: ${{ steps.build_image.outputs.tags }}  # Ensure that this is a valid reference
         registry: ${{ env.IMAGE_REGISTRY }}
         username: ${{ env.REGISTRY_USER }}
         password: ${{ env.REGISTRY_PASSWORD }}
