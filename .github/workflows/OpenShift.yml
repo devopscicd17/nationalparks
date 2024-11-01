@@ -40,3 +40,10 @@ jobs:
           ghcr.io/${{ github.repository_owner }}/nationalparks:latest
           ghcr.io/${{ github.repository_owner }}/nationalparks:${{ github.sha }}
         push: true
+    - name: Prisma Cloud Scan
+      uses: PaloAltoNetworks/prisma-cloud-scan@v1
+      with:
+        pcc_console_url: ${{ secrets.PCC_CONSOLE_URL }}
+        pcc_user: ${{ secrets.PCC_USER }}
+        pcc_pass: ${{ secrets.PCC_PASS }}
+        image_name: ${{ env.IMAGE_REGISTRY }}/${{ env.APP_NAME }}:latest
