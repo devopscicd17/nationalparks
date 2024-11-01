@@ -41,12 +41,56 @@ jobs:
           ghcr.io/${{ github.repository_owner }}/nationalparks:${{ github.sha }}
         push: true
 
-    - name: Deploy to OpenShift
-      run: |
-        bash "${GITHUB_WORKSPACE}/.github/script.sh" \
-          ${{ env.APP_NAME }} \
-          ${{ env.IMAGE_REGISTRY }}/${{ steps.build_image.outputs.image }}:${{ github.sha }} \
-          ${{ env.OPENSHIFT_NAMESPACE }}
+    name: Deploy to OpenShift
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      APP_NAME: nationalparks-new
+      IMAGE_REGISTRY: my-registry-url
+      OPENSHIFT_NAMESPACE: manoj-singh8-dev
+      OPENSHIFT_SERVER: https://api.sandbox-m3.1530.p1.openshiftapps.com:6443
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up OpenShift CLI
+        run: |
+          curl -LO https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable/openshift-client-linux.tar.gz
+          tar -xzf openshift-client-linux.tar.gz -C /usr/local/bin/
+          oc version
+
+      - name: Login to OpenShift
+        env:
+          OPENSHIFT_TOKEN: ${{ secrets.OPENSHIFT_TOKEN }}
+        run: |
+          if [ -z "$OPENSHIFT_TOKEN" ]; then
+            echo "OpenShift token is not set."
+            exit 1
+          fi
+          oc login "${{ env.OPENSHIFT_SERVER }}" --token="$OPENSHIFT_TOKEN" --insecure-skip-tls-verify
+
+      - name: Build and push image to OpenShift registry
+        run: |
+          IMAGE="${{ env.IMAGE_REGISTRY }}/${{ env.OPENSHIFT_NAMESPACE }}/${{ env.APP_NAME }}:${{ github.sha }}"
+          docker build -t "$IMAGE" .
+          docker push "$IMAGE"
+
+      - name: Deploy to OpenShift
+        run: |
+          bash "${GITHUB_WORKSPACE}/.github/script.sh" \
+            "${{ env.APP_NAME }}" \
+            "${{ env.IMAGE_REGISTRY }}/${{ env.OPENSHIFT_NAMESPACE }}/${{ env.APP_NAME }}:${{ github.sha }}" \
+            "${{ env.OPENSHIFT_NAMESPACE }}"
+
 
     # Run Prisma Cloud Scan
     - name: Scan image
