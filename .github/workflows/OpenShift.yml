@@ -1,4 +1,4 @@
-name: OpenShift Deployment and Prisma Scan
+name: OpenShift Deployment and Prisma Cloud Scan
 
 on:
   push:
