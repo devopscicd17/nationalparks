@@ -51,6 +51,7 @@ jobs:
       IMAGE_REGISTRY: my-registry-url
       OPENSHIFT_NAMESPACE: manoj-singh8-dev
       OPENSHIFT_SERVER: https://api.sandbox-m3.1530.p1.openshiftapps.com:6443
+      OPENSHIFT_TOKEN: ${{ env.OPENSHIFT_TOKEN }}
 
     steps:
       - name: Checkout code
