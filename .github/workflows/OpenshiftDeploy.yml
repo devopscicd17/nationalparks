@@ -51,7 +51,7 @@ jobs:
       IMAGE_REGISTRY: my-registry-url
       OPENSHIFT_NAMESPACE: manoj-singh8-dev
       OPENSHIFT_SERVER: https://api.sandbox-m3.1530.p1.openshiftapps.com:6443
-      OPENSHIFT_TOKEN: sha256~5W0lZBuwF2Oz_DAcxyChe3K9rmz7XZZYj_RR0qc5YKo
+      OPENSHIFT_TOKEN: sha256~nL8HZTc43467qXnWYhYJPnAOEP0CywTJOE422kL-b3Q
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -64,7 +64,7 @@ jobs:
 
       - name: Login to OpenShift
         env:
-          OPENSHIFT_TOKEN: sha256~5W0lZBuwF2Oz_DAcxyChe3K9rmz7XZZYj_RR0qc5YKo  # Use environment secret
+          OPENSHIFT_TOKEN: sha256~nL8HZTc43467qXnWYhYJPnAOEP0CywTJOE422kL-b3Q  # Use environment secret
         run: |
           if [ -z "$OPENSHIFT_TOKEN" ]; then
             echo "OpenShift token is not set."
