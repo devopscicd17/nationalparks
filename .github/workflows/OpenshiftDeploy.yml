@@ -2,13 +2,13 @@ name: OpenShift Deployment and Prisma Scan
 
 on:
   push:
-    branches: [ master]
+    branches: [ main ]
 
 jobs:
   build-and-deploy:
     name: Build, Push, Deploy to OpenShift, and Scan
     runs-on: ubuntu-22.04
-    environment: development
+    environment: development  # Set the environment to 'development'
 
     steps:
       - name: Checkout Code
@@ -28,7 +28,7 @@ jobs:
         with:
           registry: ghcr.io/${{ github.repository_owner }}
           username: ${{ github.actor }}
-          password: ${{ github.token }}
+          password: ${{ secrets.GITHUB_TOKEN }}  # Use environment secret
 
       - name: Build and Push Docker Image
         id: build-and-push
@@ -44,13 +44,13 @@ jobs:
   deploy:
     name: Deploy to OpenShift and Run Prisma Scan
     runs-on: ubuntu-latest
+    environment: development  # Set the environment to 'development'
 
     env:
       APP_NAME: nationalparks-new
       IMAGE_REGISTRY: my-registry-url
       OPENSHIFT_NAMESPACE: manoj-singh8-dev
       OPENSHIFT_SERVER: https://api.sandbox-m3.1530.p1.openshiftapps.com:6443
-      OPENSHIFT_TOKEN: sha256~5W0lZBuwF2Oz_DAcxyChe3K9rmz7XZZYj_RR0qc5YKo
 
     steps:
       - name: Checkout code
@@ -64,7 +64,7 @@ jobs:
 
       - name: Login to OpenShift
         env:
-          OPENSHIFT_TOKEN: ${{ secrets.OPENSHIFT_TOKEN }}
+          OPENSHIFT_TOKEN: ${{ secrets.OPENSHIFT_TOKEN }}  # Use environment secret
         run: |
           if [ -z "$OPENSHIFT_TOKEN" ]; then
             echo "OpenShift token is not set."
@@ -88,7 +88,7 @@ jobs:
       - name: Prisma Cloud Scan
         uses: PaloAltoNetworks/prisma-cloud-scan@v1
         with:
-          pcc_console_url: ${{ secrets.PCC_CONSOLE_URL }}
-          pcc_user: ${{ secrets.PCC_USER }}
-          pcc_pass: ${{ secrets.PCC_PASS }}
+          pcc_console_url: ${{ secrets.PCC_CONSOLE_URL }}  # Use environment secret
+          pcc_user: ${{ secrets.PCC_USER }}                # Use environment secret
+          pcc_pass: ${{ secrets.PCC_PASS }}                # Use environment secret
           image_name: ${{ env.IMAGE_REGISTRY }}/${{ env.APP_NAME }}:${{ github.sha }}
