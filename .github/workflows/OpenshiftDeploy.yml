@@ -2,7 +2,7 @@ name: OpenShift Deployment and Prisma Scan
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master]
 
 jobs:
   build-and-deploy:
